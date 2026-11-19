@@ -1,0 +1,4 @@
+build/
+*.profraw
+*.profdata
+.DS_Store

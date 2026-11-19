@@ -1,0 +1,1424 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>cli: Go Coverage Report</title>
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">lr3/cli/array.go (97.7%)</option>
+				
+				<option value="file1">lr3/cli/hash.go (97.4%)</option>
+				
+				<option value="file2">lr3/cli/input.go (98.0%)</option>
+				
+				<option value="file3">lr3/cli/list.go (97.1%)</option>
+				
+				<option value="file4">lr3/cli/menu.go (100.0%)</option>
+				
+				<option value="file5">lr3/cli/stack_queue.go (91.7%)</option>
+				
+				<option value="file6">lr3/cli/tree.go (95.5%)</option>
+				
+				<option value="file7">lr3/cmd/lr3/main.go (80.0%)</option>
+				
+				<option value="file8">lr3/structures/array.go (100.0%)</option>
+				
+				<option value="file9">lr3/structures/forward_list.go (100.0%)</option>
+				
+				<option value="file10">lr3/structures/hash_table.go (98.8%)</option>
+				
+				<option value="file11">lr3/structures/list.go (100.0%)</option>
+				
+				<option value="file12">lr3/structures/print.go (100.0%)</option>
+				
+				<option value="file13">lr3/structures/queue.go (100.0%)</option>
+				
+				<option value="file14">lr3/structures/stack.go (100.0%)</option>
+				
+				<option value="file15">lr3/structures/tree.go (100.0%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">no coverage</span>
+				<span class="cov1">low coverage</span>
+				<span class="cov2">*</span>
+				<span class="cov3">*</span>
+				<span class="cov4">*</span>
+				<span class="cov5">*</span>
+				<span class="cov6">*</span>
+				<span class="cov7">*</span>
+				<span class="cov8">*</span>
+				<span class="cov9">*</span>
+				<span class="cov10">high coverage</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package cli
+
+import (
+        "fmt"
+        "io"
+        "lr3/structures"
+)
+
+func (c *console) array() error <span class="cov8" title="19">{
+        var a structures.Array
+        fmt.Fprintln(c.out, "PUSH значение | INSERT индекс значение | GET индекс | SET индекс значение\nDEL индекс | SIZE | EMPTY | PRINT | EXIT")
+        for </span><span class="cov10" title="32">{
+                command, err := c.word()
+                if err == io.EOF </span><span class="cov1" title="1">{
+                        return nil
+                }</span>
+                <span class="cov9" title="31">if err != nil </span><span class="cov0" title="0">{
+                        return err
+                }</span>
+                <span class="cov9" title="31">switch command </span>{
+                case "EXIT":<span class="cov3" title="3">
+                        return nil</span>
+                case "PUSH":<span class="cov6" title="8">
+                        v, err := c.word()
+                        if err != nil </span><span class="cov4" title="4">{
+                                return err
+                        }</span>
+                        <span class="cov4" title="4">a.PushBack(v)</span>
+                case "INSERT", "SET":<span class="cov5" title="6">
+                        i, err := c.index()
+                        if err != nil </span><span class="cov1" title="1">{
+                                return err
+                        }</span>
+                        <span class="cov5" title="5">v, err := c.word()
+                        if err != nil </span><span class="cov1" title="1">{
+                                return err
+                        }</span>
+                        <span class="cov4" title="4">if command == "INSERT" </span><span class="cov2" title="2">{
+                                err = a.PushIndex(v, i)
+                        }</span> else<span class="cov2" title="2"> {
+                                err = a.Set(i, v)
+                        }</span>
+                        <span class="cov4" title="4">if err != nil </span><span class="cov2" title="2">{
+                                return err
+                        }</span>
+                case "GET":<span class="cov5" title="6">
+                        i, err := c.index()
+                        if err != nil </span><span class="cov3" title="3">{
+                                return err
+                        }</span>
+                        <span class="cov3" title="3">v, err := a.Get(i)
+                        if err != nil </span><span class="cov1" title="1">{
+                                return err
+                        }</span>
+                        <span class="cov2" title="2">fmt.Fprintln(c.out, v)
+                        continue</span>
+                case "DEL":<span class="cov3" title="3">
+                        i, err := c.index()
+                        if err != nil </span><span class="cov2" title="2">{
+                                return err
+                        }</span>
+                        <span class="cov1" title="1">a.PopIndex(i)</span>
+                case "SIZE":<span class="cov1" title="1">
+                        fmt.Fprintln(c.out, a.Length())
+                        continue</span>
+                case "EMPTY":<span class="cov1" title="1">
+                        c.printBool(a.Empty())
+                        continue</span>
+                case "PRINT":<span class="cov2" title="2"></span>
+                default:<span class="cov1" title="1">
+                        return fmt.Errorf("неизвестная команда массива")</span>
+                }
+                <span class="cov6" title="9">a.Print(c.out)</span>
+        }
+}
+</pre>
+		
+		<pre class="file" id="file1" style="display: none">package cli
+
+import (
+        "fmt"
+        "io"
+        "lr3/structures"
+)
+
+func (c *console) hash() error <span class="cov7" title="9">{
+        fmt.Fprintln(c.out, "Выбери метод: 1 — линейное пробирование, 2 — двойное хеширование")
+        method, err := c.number()
+        if err != nil </span><span class="cov3" title="2">{
+                return err
+        }</span>
+        <span class="cov6" title="7">if method != 1 &amp;&amp; method != 2 </span><span class="cov1" title="1">{
+                return fmt.Errorf("нужен метод 1 или 2")
+        }</span>
+        <span class="cov6" title="6">table := structures.NewHash(method == 2)
+        fmt.Fprintln(c.out, "SET ключ значение | GET ключ | HAS ключ | DEL ключ | PRINT | EXIT")
+        for </span><span class="cov10" title="19">{
+                command, err := c.word()
+                if err == io.EOF </span><span class="cov1" title="1">{
+                        return nil
+                }</span>
+                <span class="cov9" title="18">if err != nil </span><span class="cov0" title="0">{
+                        return err
+                }</span>
+                <span class="cov9" title="18">if command == "EXIT" </span><span class="cov3" title="2">{
+                        return nil
+                }</span>
+                <span class="cov9" title="16">if command == "PRINT" </span><span class="cov1" title="1">{
+                        table.Print(c.out)
+                        continue</span>
+                }
+                <span class="cov9" title="15">if command != "SET" &amp;&amp; command != "GET" &amp;&amp; command != "HAS" &amp;&amp; command != "DEL" </span><span class="cov1" title="1">{
+                        return fmt.Errorf("неизвестная команда хеш-таблицы")
+                }</span>
+                <span class="cov9" title="14">key, err := c.word()
+                if err != nil </span><span class="cov1" title="1">{
+                        return err
+                }</span>
+                <span class="cov8" title="13">switch command </span>{
+                case "SET":<span class="cov5" title="4">
+                        value, err := c.word()
+                        if err != nil </span><span class="cov1" title="1">{
+                                return err
+                        }</span>
+                        <span class="cov4" title="3">table.Set(key, value)</span>
+                case "GET":<span class="cov5" title="4">
+                        value, ok := table.Get(key)
+                        if ok </span><span class="cov4" title="3">{
+                                fmt.Fprintln(c.out, value)
+                        }</span> else<span class="cov1" title="1"> {
+                                fmt.Fprintln(c.out, "NOT_FOUND")
+                        }</span>
+                        <span class="cov5" title="4">continue</span>
+                case "HAS":<span class="cov4" title="3">
+                        c.printBool(table.Has(key))
+                        continue</span>
+                case "DEL":<span class="cov3" title="2">
+                        table.Del(key)</span>
+                }
+                <span class="cov5" title="5">fmt.Fprintln(c.out, "OK")</span>
+        }
+}
+</pre>
+		
+		<pre class="file" id="file2" style="display: none">package cli
+
+import (
+        "bufio"
+        "fmt"
+        "io"
+        "strconv"
+        "strings"
+)
+
+type console struct {
+        in  *bufio.Reader
+        out io.Writer
+}
+
+func space(c byte) bool <span class="cov10" title="867">{ return strings.ContainsRune(" \t\r\n\v\f", rune(c)) }</span>
+func (c *console) word() (string, error) <span class="cov8" title="269">{
+        var first byte
+        for </span><span class="cov8" title="271">{
+                b, err := c.in.ReadByte()
+                if err != nil </span><span class="cov5" title="23">{
+                        return "", err
+                }</span>
+                <span class="cov8" title="248">if !space(b) </span><span class="cov8" title="246">{
+                        first = b
+                        break</span>
+                }
+        }
+        <span class="cov8" title="246">var text strings.Builder
+        if first == '"' </span><span class="cov3" title="5">{
+                for </span><span class="cov5" title="29">{
+                        b, err := c.in.ReadByte()
+                        if err != nil </span><span class="cov1" title="1">{
+                                return "", fmt.Errorf("незакрытая строка")
+                        }</span>
+                        <span class="cov5" title="28">if b == '"' </span><span class="cov2" title="3">{
+                                next, err := c.in.Peek(1)
+                                if err == nil &amp;&amp; !space(next[0]) </span><span class="cov1" title="1">{
+                                        return "", fmt.Errorf("между аргументами нужен пробел")
+                                }</span>
+                                <span class="cov1" title="2">return text.String(), nil</span>
+                        }
+                        <span class="cov5" title="25">if b == '\\' </span><span class="cov1" title="2">{
+                                b, err = c.in.ReadByte()
+                                if err != nil </span><span class="cov1" title="1">{
+                                        return "", fmt.Errorf("незакрытая строка")
+                                }</span>
+                        }
+                        <span class="cov5" title="24">text.WriteByte(b)</span>
+                }
+        }
+        <span class="cov8" title="241">text.WriteByte(first)
+        for </span><span class="cov9" title="665">{
+                b, err := c.in.ReadByte()
+                if err == io.EOF </span><span class="cov6" title="49">{
+                        return text.String(), nil
+                }</span>
+                <span class="cov9" title="616">if err != nil </span><span class="cov0" title="0">{
+                        return "", err
+                }</span>
+                <span class="cov9" title="616">if space(b) </span><span class="cov7" title="192">{
+                        return text.String(), nil
+                }</span>
+                <span class="cov9" title="424">text.WriteByte(b)</span>
+        }
+}
+func (c *console) number() (int, error) <span class="cov7" title="92">{
+        s, err := c.word()
+        if err != nil </span><span class="cov3" title="8">{
+                return 0, err
+        }</span>
+        <span class="cov6" title="84">n, err := strconv.ParseInt(s, 10, 32)
+        if err != nil </span><span class="cov2" title="4">{
+                return 0, fmt.Errorf("нужно целое число")
+        }</span>
+        <span class="cov6" title="80">return int(n), nil</span>
+}
+func (c *console) index() (int, error) <span class="cov5" title="22">{
+        n, err := c.number()
+        if err != nil </span><span class="cov3" title="6">{
+                return 0, err
+        }</span>
+        <span class="cov4" title="16">if n &lt; 0 </span><span class="cov1" title="2">{
+                return 0, fmt.Errorf("индекс должен быть неотрицательным")
+        }</span>
+        <span class="cov4" title="14">return n, nil</span>
+}
+func (c *console) printBool(b bool) <span class="cov4" title="18">{
+        if b </span><span class="cov4" title="14">{
+                fmt.Fprintln(c.out, "TRUE")
+        }</span> else<span class="cov2" title="4"> {
+                fmt.Fprintln(c.out, "FALSE")
+        }</span>
+}
+</pre>
+		
+		<pre class="file" id="file3" style="display: none">package cli
+
+import (
+        "fmt"
+        "io"
+)
+
+type listMethods interface {
+        PushBack(string)
+        PushFront(string)
+        PushIndex(string, int)
+        PopIndex(int)
+        PopFront()
+        PopBack()
+        EraseValue(string) bool
+        Find(string) bool
+        Empty() bool
+        Print(io.Writer)
+}
+
+func (c *console) list(l listMethods) error <span class="cov6" title="10">{
+        fmt.Fprintln(c.out, "PUSH значение | FRONT значение | INSERT индекс значение | DEL индекс\nDEL_VALUE значение | FIND значение | POP_FRONT | POP_BACK | EMPTY | PRINT | EXIT")
+        for </span><span class="cov10" title="33">{
+                command, err := c.word()
+                if err == io.EOF </span><span class="cov2" title="2">{
+                        return nil
+                }</span>
+                <span class="cov9" title="31">if err != nil </span><span class="cov0" title="0">{
+                        return err
+                }</span>
+                <span class="cov9" title="31">switch command </span>{
+                case "EXIT":<span class="cov2" title="2">
+                        return nil</span>
+                case "PUSH", "FRONT", "DEL_VALUE", "FIND":<span class="cov7" title="13">
+                        v, err := c.word()
+                        if err != nil </span><span class="cov2" title="2">{
+                                return err
+                        }</span>
+                        <span class="cov7" title="11">switch command </span>{
+                        case "PUSH":<span class="cov4" title="4">
+                                l.PushBack(v)</span>
+                        case "FRONT":<span class="cov2" title="2">
+                                l.PushFront(v)</span>
+                        case "DEL_VALUE":<span class="cov2" title="2">
+                                l.EraseValue(v)</span>
+                        case "FIND":<span class="cov3" title="3">
+                                c.printBool(l.Find(v))
+                                continue</span>
+                        }
+                case "INSERT":<span class="cov4" title="4">
+                        i, err := c.index()
+                        if err != nil </span><span class="cov1" title="1">{
+                                return err
+                        }</span>
+                        <span class="cov3" title="3">v, err := c.word()
+                        if err != nil </span><span class="cov1" title="1">{
+                                return err
+                        }</span>
+                        <span class="cov2" title="2">l.PushIndex(v, i)</span>
+                case "DEL":<span class="cov3" title="3">
+                        i, err := c.index()
+                        if err != nil </span><span class="cov1" title="1">{
+                                return err
+                        }</span>
+                        <span class="cov2" title="2">l.PopIndex(i)</span>
+                case "POP_FRONT":<span class="cov2" title="2">
+                        l.PopFront()</span>
+                case "POP_BACK":<span class="cov2" title="2">
+                        l.PopBack()</span>
+                case "EMPTY":<span class="cov2" title="2">
+                        c.printBool(l.Empty())
+                        continue</span>
+                case "PRINT":<span class="cov2" title="2"></span>
+                default:<span class="cov1" title="1">
+                        return fmt.Errorf("неизвестная команда списка")</span>
+                }
+                <span class="cov8" title="18">l.Print(c.out)</span>
+        }
+}
+</pre>
+		
+		<pre class="file" id="file4" style="display: none">package cli
+
+import (
+        "bufio"
+        "fmt"
+        "io"
+        "lr3/structures"
+)
+
+func Run(input io.Reader, output io.Writer) error <span class="cov10" title="53">{
+        c := console{bufio.NewReader(input), output}
+        fmt.Fprintln(output, "Выбери структуру:\n1 — массив\n2 — односвязный список\n3 — двусвязный список\n4 — очередь\n5 — стек\n6 — хеш-таблица\n7 — полное двоичное дерево")
+        n, err := c.number()
+        if err != nil </span><span class="cov2" title="2">{
+                return err
+        }</span>
+        <span class="cov9" title="51">switch n </span>{
+        case 1:<span class="cov7" title="19">
+                return c.array()</span>
+        case 2:<span class="cov5" title="7">
+                var l structures.ForwardList
+                return c.list(&amp;l)</span>
+        case 3:<span class="cov3" title="3">
+                var l structures.List
+                return c.list(&amp;l)</span>
+        case 4:<span class="cov4" title="4">
+                var q structures.Queue[string]
+                return c.stackQueue(&amp;q)</span>
+        case 5:<span class="cov3" title="3">
+                var s structures.Stack
+                return c.stackQueue(&amp;s)</span>
+        case 6:<span class="cov5" title="9">
+                return c.hash()</span>
+        case 7:<span class="cov4" title="5">
+                return c.tree()</span>
+        default:<span class="cov1" title="1">
+                return fmt.Errorf("нужен номер от 1 до 7")</span>
+        }
+}
+</pre>
+		
+		<pre class="file" id="file5" style="display: none">package cli
+
+import (
+        "fmt"
+        "io"
+)
+
+type stackQueueMethods interface {
+        Push(string)
+        Pop() (string, error)
+        Empty() bool
+        Print(io.Writer)
+}
+
+func (c *console) stackQueue(data stackQueueMethods) error <span class="cov6" title="7">{
+        fmt.Fprintln(c.out, "PUSH значение | POP | EMPTY | PRINT | EXIT")
+        for </span><span class="cov10" title="23">{
+                command, err := c.word()
+                if err == io.EOF </span><span class="cov2" title="2">{
+                        return nil
+                }</span>
+                <span class="cov9" title="21">if err != nil </span><span class="cov0" title="0">{
+                        return err
+                }</span>
+                <span class="cov9" title="21">switch command </span>{
+                case "EXIT":<span class="cov2" title="2">
+                        return nil</span>
+                case "PUSH":<span class="cov5" title="5">
+                        v, err := c.word()
+                        if err != nil </span><span class="cov1" title="1">{
+                                return err
+                        }</span>
+                        <span class="cov4" title="4">data.Push(v)</span>
+                case "POP":<span class="cov6" title="6">
+                        if data.Empty() </span><span class="cov2" title="2">{
+                                fmt.Fprintln(c.out, "EMPTY")
+                        }</span> else<span class="cov4" title="4"> {
+                                v, err := data.Pop()
+                                if err != nil </span><span class="cov0" title="0">{
+                                        return err
+                                }</span>
+                                <span class="cov4" title="4">fmt.Fprintln(c.out, v)</span>
+                        }
+                        <span class="cov6" title="6">continue</span>
+                case "EMPTY":<span class="cov4" title="4">
+                        c.printBool(data.Empty())
+                        continue</span>
+                case "PRINT":<span class="cov2" title="2"></span>
+                default:<span class="cov2" title="2">
+                        return fmt.Errorf("неизвестная команда стека или очереди")</span>
+                }
+                <span class="cov6" title="6">data.Print(c.out)</span>
+        }
+}
+</pre>
+		
+		<pre class="file" id="file6" style="display: none">package cli
+
+import (
+        "fmt"
+        "io"
+        "lr3/structures"
+)
+
+func (c *console) tree() error <span class="cov6" title="5">{
+        var tree structures.Tree
+        fmt.Fprintln(c.out, "INSERT число | FIND число | CHECK | PRE | IN | POST | EMPTY | PRINT | EXIT")
+        for </span><span class="cov10" title="18">{
+                command, err := c.word()
+                if err == io.EOF </span><span class="cov1" title="1">{
+                        return nil
+                }</span>
+                <span class="cov9" title="17">if err != nil </span><span class="cov0" title="0">{
+                        return err
+                }</span>
+                <span class="cov9" title="17">switch command </span>{
+                case "EXIT":<span class="cov1" title="1">
+                        return nil</span>
+                case "INSERT", "FIND":<span class="cov7" title="8">
+                        v, err := c.number()
+                        if err != nil </span><span class="cov3" title="2">{
+                                return err
+                        }</span>
+                        <span class="cov6" title="6">if command == "INSERT" </span><span class="cov5" title="4">{
+                                tree.Insert(v)
+                                tree.Print(c.out)
+                        }</span> else<span class="cov3" title="2"> {
+                                c.printBool(tree.Search(v))
+                        }</span>
+                case "CHECK":<span class="cov3" title="2">
+                        c.printBool(tree.IsComplete())</span>
+                case "PRE", "IN", "POST":<span class="cov4" title="3">
+                        tree.PrintOrder(c.out, command)</span>
+                case "EMPTY":<span class="cov1" title="1">
+                        c.printBool(tree.Empty())</span>
+                case "PRINT":<span class="cov1" title="1">
+                        tree.Print(c.out)</span>
+                default:<span class="cov1" title="1">
+                        return fmt.Errorf("неизвестная команда дерева")</span>
+                }
+        }
+}
+</pre>
+		
+		<pre class="file" id="file7" style="display: none">package main
+
+import (
+        "fmt"
+        "io"
+        "lr3/cli"
+        "os"
+)
+
+func run(input io.Reader, output, errors io.Writer) int <span class="cov10" title="2">{
+        if err := cli.Run(input, output); err != nil </span><span class="cov1" title="1">{
+                fmt.Fprintln(errors, "Ошибка:", err)
+                return 1
+        }</span>
+        <span class="cov1" title="1">return 0</span>
+}
+func main() <span class="cov0" title="0">{ os.Exit(run(os.Stdin, os.Stdout, os.Stderr)) }</span>
+</pre>
+		
+		<pre class="file" id="file8" style="display: none">package structures
+
+import "fmt"
+
+type Array struct {
+        data []string
+        size int
+}
+
+func (a *Array) reserve() <span class="cov9" title="6285">{
+        if a.size &lt; len(a.data) </span><span class="cov9" title="6115">{
+                return
+        }</span>
+        <span class="cov6" title="170">capacity := len(a.data) * 2
+        if capacity == 0 </span><span class="cov4" title="42">{
+                capacity = 4
+        }</span>
+        <span class="cov6" title="170">next := make([]string, capacity)
+        copy(next, a.data)
+        a.data = next</span>
+}
+func (a *Array) PushBack(value string) <span class="cov9" title="6282">{
+        a.reserve()
+        a.data[a.size] = value
+        a.size++
+}</span>
+func (a *Array) PushIndex(value string, index int) error <span class="cov2" title="5">{
+        if index &lt; 0 || index &gt; a.size </span><span class="cov1" title="2">{
+                return fmt.Errorf("array index out of range")
+        }</span>
+        <span class="cov2" title="3">a.reserve()
+        copy(a.data[index+1:a.size+1], a.data[index:a.size])
+        a.data[index] = value
+        a.size++
+        return nil</span>
+}
+func (a *Array) Get(index int) (string, error) <span class="cov5" title="103">{
+        if index &lt; 0 || index &gt;= a.size </span><span class="cov2" title="3">{
+                return "", fmt.Errorf("array index out of range")
+        }</span>
+        <span class="cov5" title="100">return a.data[index], nil</span>
+}
+func (a *Array) Set(index int, value string) error <span class="cov2" title="4">{
+        if index &lt; 0 || index &gt;= a.size </span><span class="cov2" title="3">{
+                return fmt.Errorf("array index out of range")
+        }</span>
+        <span class="cov1" title="1">a.data[index] = value
+        return nil</span>
+}
+func (a *Array) PopIndex(index int) <span class="cov2" title="6">{
+        if index &lt; 0 || index &gt;= a.size </span><span class="cov2" title="3">{
+                return
+        }</span>
+        <span class="cov2" title="3">copy(a.data[index:a.size-1], a.data[index+1:a.size])
+        a.size--
+        a.data[a.size] = ""</span>
+}
+func (a *Array) Length() int <span class="cov10" title="8191">{
+        return a.size
+}</span>
+func (a *Array) Empty() bool <span class="cov2" title="3">{
+        return a.size == 0
+}</span>
+func (a *Array) Values() []string <span class="cov2" title="4">{
+        return append([]string{}, a.data[:a.size]...)
+}</span>
+
+func (a *Array) Clear() <span class="cov1" title="1">{
+        for i := 0; i &lt; a.size; i++ </span><span class="cov2" title="4">{
+                a.data[i] = ""
+        }</span>
+        <span class="cov1" title="1">a.size = 0</span>
+}
+
+func (a *Array) Swap(other *Array) <span class="cov1" title="2">{
+        a.data, other.data = other.data, a.data
+        a.size, other.size = other.size, a.size
+}</span>
+</pre>
+		
+		<pre class="file" id="file9" style="display: none">package structures
+
+type forwardNode struct {
+        value string
+        next  *forwardNode
+}
+type ForwardList struct{ head *forwardNode }
+
+func (l *ForwardList) PushFront(v string) <span class="cov4" title="3">{
+        l.head = &amp;forwardNode{v, l.head}
+}</span>
+func (l *ForwardList) PushBack(v string) <span class="cov7" title="7">{
+        n := &amp;forwardNode{value: v}
+        if l.head == nil </span><span class="cov5" title="4">{
+                l.head = n
+                return
+        }</span>
+        <span class="cov4" title="3">c := l.head
+        for c.next != nil </span><span class="cov1" title="1">{
+                c = c.next
+        }</span>
+        <span class="cov4" title="3">c.next = n</span>
+}
+func (l *ForwardList) PushIndex(v string, index int) <span class="cov6" title="5">{
+        if index &lt; 0 </span><span class="cov1" title="1">{
+                return
+        }</span>
+        <span class="cov5" title="4">if index == 0 </span><span class="cov1" title="1">{
+                l.PushFront(v)
+                return
+        }</span>
+        <span class="cov4" title="3">c := l.head
+        for i := 0; i &lt; index-1 &amp;&amp; c != nil; i++ </span><span class="cov3" title="2">{
+                c = c.next
+        }</span>
+        <span class="cov4" title="3">if c != nil </span><span class="cov1" title="1">{
+                c.next = &amp;forwardNode{v, c.next}
+        }</span>
+}
+func (l *ForwardList) PopFront() <span class="cov6" title="5">{
+        if l.head != nil </span><span class="cov5" title="4">{
+                l.head = l.head.next
+        }</span>
+}
+func (l *ForwardList) PopBack() <span class="cov5" title="4">{
+        if l.head == nil </span><span class="cov1" title="1">{
+                return
+        }</span>
+        <span class="cov4" title="3">if l.head.next == nil </span><span class="cov3" title="2">{
+                l.head = nil
+                return
+        }</span>
+        <span class="cov1" title="1">c := l.head
+        for c.next.next != nil </span><span class="cov3" title="2">{
+                c = c.next
+        }</span>
+        <span class="cov1" title="1">c.next = nil</span>
+}
+func (l *ForwardList) PopIndex(index int) <span class="cov7" title="6">{
+        if index &lt; 0 </span><span class="cov1" title="1">{
+                return
+        }</span>
+        <span class="cov6" title="5">if index == 0 </span><span class="cov3" title="2">{
+                l.PopFront()
+                return
+        }</span>
+        <span class="cov4" title="3">c := l.head
+        for i := 0; i &lt; index-1 &amp;&amp; c != nil; i++ </span><span class="cov6" title="5">{
+                c = c.next
+        }</span>
+        <span class="cov4" title="3">if c != nil &amp;&amp; c.next != nil </span><span class="cov1" title="1">{
+                c.next = c.next.next
+        }</span>
+}
+func (l *ForwardList) Find(v string) bool <span class="cov3" title="2">{
+        for c := l.head; c != nil; c = c.next </span><span class="cov5" title="4">{
+                if c.value == v </span><span class="cov1" title="1">{
+                        return true
+                }</span>
+        }
+        <span class="cov1" title="1">return false</span>
+}
+func (l *ForwardList) InsertBefore(target, v string) bool <span class="cov4" title="3">{
+        var prev *forwardNode
+        c := l.head
+        for c != nil &amp;&amp; c.value != target </span><span class="cov3" title="2">{
+                prev = c
+                c = c.next
+        }</span>
+        <span class="cov4" title="3">if c == nil </span><span class="cov1" title="1">{
+                return false
+        }</span>
+        <span class="cov3" title="2">n := &amp;forwardNode{v, c}
+        if prev == nil </span><span class="cov1" title="1">{
+                l.head = n
+        }</span> else<span class="cov1" title="1"> {
+                prev.next = n
+        }</span>
+        <span class="cov3" title="2">return true</span>
+}
+func (l *ForwardList) InsertAfter(target, v string) bool <span class="cov4" title="3">{
+        c := l.head
+        for c != nil &amp;&amp; c.value != target </span><span class="cov6" title="5">{
+                c = c.next
+        }</span>
+        <span class="cov4" title="3">if c == nil </span><span class="cov1" title="1">{
+                return false
+        }</span>
+        <span class="cov3" title="2">c.next = &amp;forwardNode{v, c.next}
+        return true</span>
+}
+func (l *ForwardList) EraseValue(v string) bool <span class="cov5" title="4">{
+        var prev *forwardNode
+        c := l.head
+        for c != nil &amp;&amp; c.value != v </span><span class="cov1" title="1">{
+                prev = c
+                c = c.next
+        }</span>
+        <span class="cov5" title="4">if c == nil </span><span class="cov1" title="1">{
+                return false
+        }</span>
+        <span class="cov4" title="3">if prev == nil </span><span class="cov3" title="2">{
+                l.head = c.next
+        }</span> else<span class="cov1" title="1"> {
+                prev.next = c.next
+        }</span>
+        <span class="cov4" title="3">return true</span>
+}
+func (l *ForwardList) EraseBefore(target string) bool <span class="cov6" title="5">{
+        var before, prev *forwardNode
+        c := l.head
+        for c != nil &amp;&amp; c.value != target </span><span class="cov7" title="7">{
+                before = prev
+                prev = c
+                c = c.next
+        }</span>
+        <span class="cov6" title="5">if c == nil || prev == nil </span><span class="cov4" title="3">{
+                return false
+        }</span>
+        <span class="cov3" title="2">if before == nil </span><span class="cov1" title="1">{
+                l.head = c
+        }</span> else<span class="cov1" title="1"> {
+                before.next = c
+        }</span>
+        <span class="cov3" title="2">return true</span>
+}
+func (l *ForwardList) EraseAfter(target string) bool <span class="cov6" title="5">{
+        c := l.head
+        for c != nil &amp;&amp; c.value != target </span><span class="cov8" title="8">{
+                c = c.next
+        }</span>
+        <span class="cov6" title="5">if c == nil || c.next == nil </span><span class="cov4" title="3">{
+                return false
+        }</span>
+        <span class="cov3" title="2">c.next = c.next.next
+        return true</span>
+}
+func (l *ForwardList) Empty() bool <span class="cov8" title="8">{
+        return l.head == nil
+}</span>
+func (l *ForwardList) Values() []string <span class="cov7" title="7">{
+        v := []string{}
+        for c := l.head; c != nil; c = c.next </span><span class="cov10" title="13">{
+                v = append(v, c.value)
+        }</span>
+        <span class="cov7" title="7">return v</span>
+}
+</pre>
+		
+		<pre class="file" id="file10" style="display: none">package structures
+
+type HashTable struct {
+        keys, data  Array
+        count, used int
+        double      bool
+}
+
+func NewHash(double bool) *HashTable <span class="cov2" title="5">{
+        table := &amp;HashTable{double: double}
+        for i := 0; i &lt; 8; i++ </span><span class="cov4" title="40">{
+                table.keys.PushBack("")
+                table.data.PushBack("")
+        }</span>
+        <span class="cov2" title="5">return table</span>
+}
+
+func (t *HashTable) hashStep(key string) int <span class="cov9" title="2797">{
+        if !t.double </span><span class="cov8" title="1291">{
+                return 1
+        }</span>
+        <span class="cov8" title="1506">var number uint64
+        for i := 0; i &lt; len(key); i++ </span><span class="cov9" title="3548">{
+                number = number*131 + uint64(key[i])
+        }</span>
+        // Нечётный шаг проходит все ячейки при размере 8, 16, 32 и далее.
+        <span class="cov8" title="1506">return 2*int(number%uint64(t.keys.Length()/2)) + 1</span>
+}
+
+func (t *HashTable) findPos(key string) int <span class="cov9" title="2797">{
+        size := t.keys.Length()
+        // FNV-1a вычисляет начальную позицию в обоих режимах.
+        var hash uint64 = 14695981039346656037
+        for i := 0; i &lt; len(key); i++ </span><span class="cov10" title="6683">{
+                hash ^= uint64(key[i])
+                hash *= 1099511628211
+        }</span>
+        <span class="cov9" title="2797">pos := int(hash % uint64(size))
+        jump := t.hashStep(key)
+        deleted := size
+        wanted := "+" + key
+
+        for i := 0; i &lt; size; i++ </span><span class="cov9" title="3802">{
+                cell := t.keys.data[pos]
+                if cell == wanted </span><span class="cov7" title="727">{
+                        return pos
+                }</span>
+                <span class="cov9" title="3075">if cell == "" </span><span class="cov8" title="2070">{
+                        if deleted != size </span><span class="cov6" title="325">{
+                                return deleted
+                        }</span>
+                        <span class="cov8" title="1745">return pos</span>
+                }
+                <span class="cov8" title="1005">if cell == "-" &amp;&amp; deleted == size </span><span class="cov7" title="364">{
+                        deleted = pos
+                }</span>
+                <span class="cov8" title="1005">pos = (pos + jump) % size</span>
+        }
+        <span class="cov0" title="0">return deleted</span>
+}
+
+func (t *HashTable) Set(key, value string) <span class="cov8" title="1737">{
+        pos := t.findPos(key)
+        size := t.keys.Length()
+        if pos &lt; size &amp;&amp; t.keys.data[pos] == "+"+key </span><span class="cov1" title="2">{
+                t.data.data[pos] = value
+                return
+        }</span>
+        <span class="cov8" title="1735">if t.count &gt;= size/2 || pos == size </span><span class="cov3" title="14">{
+                t.rebuild(true)
+                pos = t.findPos(key)
+        }</span> else<span class="cov8" title="1721"> if t.used &gt;= size-size/4 &amp;&amp; t.keys.data[pos] == "" </span><span class="cov3" title="13">{
+                t.rebuild(false)
+                pos = t.findPos(key)
+        }</span>
+
+        <span class="cov8" title="1735">if t.keys.data[pos] == "" </span><span class="cov8" title="1714">{
+                t.used++
+        }</span>
+        <span class="cov8" title="1735">t.keys.data[pos] = "+" + key
+        t.data.data[pos] = value
+        t.count++</span>
+}
+
+func (t *HashTable) Get(key string) (string, bool) <span class="cov7" title="627">{
+        pos := t.findPos(key)
+        if pos == t.keys.Length() || t.keys.data[pos] != "+"+key </span><span class="cov6" title="306">{
+                return "", false
+        }</span>
+        <span class="cov6" title="321">return t.data.data[pos], true</span>
+}
+
+func (t *HashTable) Has(key string) bool <span class="cov2" title="5">{
+        _, found := t.Get(key)
+        return found
+}</span>
+
+func (t *HashTable) Del(key string) <span class="cov7" title="406">{
+        pos := t.findPos(key)
+        if pos &lt; t.keys.Length() &amp;&amp; t.keys.data[pos] == "+"+key </span><span class="cov7" title="404">{
+                t.keys.data[pos] = "-"
+                t.data.data[pos] = ""
+                t.count--
+        }</span>
+}
+
+func (t *HashTable) Names() []string <span class="cov2" title="5">{
+        names := []string{}
+        for i := 0; i &lt; t.keys.Length(); i++ </span><span class="cov4" title="40">{
+                key := t.keys.data[i]
+                if len(key) &gt; 0 &amp;&amp; key[0] == '+' </span><span class="cov3" title="10">{
+                        names = append(names, key[1:])
+                }</span>
+        }
+        <span class="cov2" title="5">return names</span>
+}
+
+func (t *HashTable) rebuild(grow bool) <span class="cov4" title="27">{
+        var keys, values Array
+        size := t.keys.Length()
+        for i := 0; i &lt; size; i++ </span><span class="cov8" title="2136">{
+                cell := t.keys.data[i]
+                if len(cell) &gt; 0 &amp;&amp; cell[0] == '+' </span><span class="cov8" title="1016">{
+                        keys.PushBack(cell[1:])
+                        values.PushBack(t.data.data[i])
+                }</span>
+                <span class="cov8" title="2136">t.keys.data[i] = ""
+                t.data.data[i] = ""</span>
+        }
+        <span class="cov4" title="27">if grow </span><span class="cov3" title="14">{
+                for i := 0; i &lt; size; i++ </span><span class="cov8" title="2032">{
+                        t.keys.PushBack("")
+                        t.data.PushBack("")
+                }</span>
+        }
+        <span class="cov4" title="27">t.count = 0
+        t.used = 0
+        for i := 0; i &lt; keys.Length(); i++ </span><span class="cov8" title="1016">{
+                t.Set(keys.data[i], values.data[i])
+        }</span>
+}
+</pre>
+		
+		<pre class="file" id="file11" style="display: none">package structures
+
+type listNode struct {
+        value      string
+        next, prev *listNode
+}
+type List struct{ head, tail *listNode }
+
+func (l *List) PushFront(v string) <span class="cov3" title="3">{
+        n := &amp;listNode{value: v, next: l.head}
+        if l.head != nil </span><span class="cov2" title="2">{
+                l.head.prev = n
+        }</span> else<span class="cov1" title="1"> {
+                l.tail = n
+        }</span>
+        <span class="cov3" title="3">l.head = n</span>
+}
+func (l *List) PushBack(v string) <span class="cov5" title="7">{
+        n := &amp;listNode{value: v, prev: l.tail}
+        if l.tail != nil </span><span class="cov3" title="3">{
+                l.tail.next = n
+        }</span> else<span class="cov4" title="4"> {
+                l.head = n
+        }</span>
+        <span class="cov5" title="7">l.tail = n</span>
+}
+func (l *List) PushIndex(v string, index int) <span class="cov4" title="5">{
+        if index &lt; 0 </span><span class="cov1" title="1">{
+                return
+        }</span>
+        <span class="cov4" title="4">if index == 0 </span><span class="cov1" title="1">{
+                l.PushFront(v)
+                return
+        }</span>
+        <span class="cov3" title="3">c := l.head
+        for i := 0; i &lt; index-1 &amp;&amp; c != nil; i++ </span><span class="cov1" title="1">{
+                c = c.next
+        }</span>
+        <span class="cov3" title="3">if c == nil </span><span class="cov1" title="1">{
+                l.PushBack(v)
+                return
+        }</span>
+        <span class="cov2" title="2">l.insertAfterNode(c, v)</span>
+}
+func (l *List) unlink(c *listNode) <span class="cov7" title="14">{
+        if c.prev != nil </span><span class="cov5" title="6">{
+                c.prev.next = c.next
+        }</span> else<span class="cov6" title="8"> {
+                l.head = c.next
+        }</span>
+        <span class="cov7" title="14">if c.next != nil </span><span class="cov6" title="8">{
+                c.next.prev = c.prev
+        }</span> else<span class="cov5" title="6"> {
+                l.tail = c.prev
+        }</span>
+        <span class="cov7" title="14">c.next = nil
+        c.prev = nil</span>
+}
+func (l *List) PopFront() <span class="cov3" title="3">{
+        if l.head != nil </span><span class="cov2" title="2">{
+                l.unlink(l.head)
+        }</span>
+}
+func (l *List) PopBack() <span class="cov3" title="3">{
+        if l.tail != nil </span><span class="cov2" title="2">{
+                l.unlink(l.tail)
+        }</span>
+}
+func (l *List) PopIndex(index int) <span class="cov5" title="6">{
+        if index &lt; 0 </span><span class="cov1" title="1">{
+                return
+        }</span>
+        <span class="cov4" title="5">c := l.head
+        for i := 0; i &lt; index &amp;&amp; c != nil; i++ </span><span class="cov5" title="6">{
+                c = c.next
+        }</span>
+        <span class="cov4" title="5">if c != nil </span><span class="cov3" title="3">{
+                l.unlink(c)
+        }</span>
+}
+func (l *List) findNode(v string) *listNode <span class="cov8" title="22">{
+        for c := l.head; c != nil; c = c.next </span><span class="cov10" title="40">{
+                if c.value == v </span><span class="cov7" title="14">{
+                        return c
+                }</span>
+        }
+        <span class="cov6" title="8">return nil</span>
+}
+func (l *List) Find(v string) bool <span class="cov2" title="2">{
+        return l.findNode(v) != nil
+}</span>
+func (l *List) InsertBefore(target, v string) bool <span class="cov3" title="3">{
+        c := l.findNode(target)
+        if c == nil </span><span class="cov1" title="1">{
+                return false
+        }</span>
+        <span class="cov2" title="2">n := &amp;listNode{value: v, next: c, prev: c.prev}
+        if c.prev != nil </span><span class="cov1" title="1">{
+                c.prev.next = n
+        }</span> else<span class="cov1" title="1"> {
+                l.head = n
+        }</span>
+        <span class="cov2" title="2">c.prev = n
+        return true</span>
+}
+func (l *List) insertAfterNode(c *listNode, v string) <span class="cov4" title="4">{
+        n := &amp;listNode{value: v, next: c.next, prev: c}
+        if c.next != nil </span><span class="cov2" title="2">{
+                c.next.prev = n
+        }</span> else<span class="cov2" title="2"> {
+                l.tail = n
+        }</span>
+        <span class="cov4" title="4">c.next = n</span>
+}
+func (l *List) InsertAfter(target, v string) bool <span class="cov3" title="3">{
+        c := l.findNode(target)
+        if c == nil </span><span class="cov1" title="1">{
+                return false
+        }</span>
+        <span class="cov2" title="2">l.insertAfterNode(c, v)
+        return true</span>
+}
+func (l *List) EraseValue(v string) bool <span class="cov4" title="4">{
+        c := l.findNode(v)
+        if c == nil </span><span class="cov1" title="1">{
+                return false
+        }</span>
+        <span class="cov3" title="3">l.unlink(c)
+        return true</span>
+}
+func (l *List) EraseBefore(target string) bool <span class="cov4" title="5">{
+        c := l.findNode(target)
+        if c == nil || c.prev == nil </span><span class="cov3" title="3">{
+                return false
+        }</span>
+        <span class="cov2" title="2">l.unlink(c.prev)
+        return true</span>
+}
+func (l *List) EraseAfter(target string) bool <span class="cov4" title="5">{
+        c := l.findNode(target)
+        if c == nil || c.next == nil </span><span class="cov3" title="3">{
+                return false
+        }</span>
+        <span class="cov2" title="2">l.unlink(c.next)
+        return true</span>
+}
+func (l *List) Empty() bool <span class="cov5" title="6">{
+        return l.head == nil
+}</span>
+func (l *List) Values() []string <span class="cov5" title="7">{
+        v := []string{}
+        for c := l.head; c != nil; c = c.next </span><span class="cov7" title="14">{
+                v = append(v, c.value)
+        }</span>
+        <span class="cov5" title="7">return v</span>
+}
+</pre>
+		
+		<pre class="file" id="file12" style="display: none">package structures
+
+import (
+        "fmt"
+        "io"
+        "strings"
+)
+
+func printValues(output io.Writer, values []string) <span class="cov10" title="8">{
+        fmt.Fprintln(output, "["+strings.Join(values, ", ")+"]")
+}</span>
+
+func (a *Array) Print(output io.Writer) <span class="cov1" title="1">{
+        printValues(output, a.Values())
+}</span>
+func (l *ForwardList) Print(output io.Writer) <span class="cov4" title="2">{
+        printValues(output, l.Values())
+}</span>
+func (l *List) Print(output io.Writer) <span class="cov4" title="2">{
+        printValues(output, l.Values())
+}</span>
+func (s *Stack) Print(output io.Writer) <span class="cov1" title="1">{
+        printValues(output, s.Values())
+}</span>
+func (q *Queue[T]) Print(output io.Writer) <span class="cov1" title="1">{
+        fmt.Fprint(output, "[")
+        for node := q.head; node != nil; node = node.next </span><span class="cov4" title="2">{
+                if node != q.head </span><span class="cov1" title="1">{
+                        fmt.Fprint(output, ", ")
+                }</span>
+                <span class="cov4" title="2">fmt.Fprint(output, node.value)</span>
+        }
+        <span class="cov1" title="1">fmt.Fprintln(output, "]")</span>
+}
+func (t *Tree) Print(output io.Writer) <span class="cov1" title="1">{
+        printValues(output, t.Values())
+}</span>
+func (t *Tree) PrintOrder(output io.Writer, order string) <span class="cov1" title="1">{
+        printValues(output, t.Traverse(order))
+}</span>
+func (t *HashTable) Print(output io.Writer) <span class="cov4" title="2">{
+        fmt.Fprint(output, "[")
+        for i, key := range t.Names() </span><span class="cov10" title="8">{
+                if i &gt; 0 </span><span class="cov8" title="6">{
+                        fmt.Fprint(output, ", ")
+                }</span>
+                <span class="cov10" title="8">value, _ := t.Get(key)
+                fmt.Fprintf(output, "%q: %q", key, value)</span>
+        }
+        <span class="cov4" title="2">fmt.Fprintln(output, "]")</span>
+}
+</pre>
+		
+		<pre class="file" id="file13" style="display: none">package structures
+
+import "fmt"
+
+type queueNode[T any] struct {
+        value T
+        next  *queueNode[T]
+}
+
+type Queue[T any] struct {
+        head *queueNode[T]
+        tail *queueNode[T]
+}
+
+func (q *Queue[T]) Push(value T) <span class="cov10" title="15243">{
+        newNode := &amp;queueNode[T]{value: value}
+        if q.tail == nil </span><span class="cov6" title="418">{
+                q.head = newNode
+        }</span> else<span class="cov9" title="14825"> {
+                q.tail.next = newNode
+        }</span>
+        <span class="cov10" title="15243">q.tail = newNode</span>
+}
+
+func (q *Queue[T]) Pop() (T, error) <span class="cov9" title="12842">{
+        if q.head == nil </span><span class="cov1" title="1">{
+                var value T
+                return value, fmt.Errorf("очередь пуста")
+        }</span>
+        <span class="cov9" title="12841">temp := q.head
+        q.head = temp.next
+        if q.head == nil </span><span class="cov6" title="320">{
+                q.tail = nil
+        }</span>
+        <span class="cov9" title="12841">return temp.value, nil</span>
+}
+
+func (q *Queue[T]) Empty() bool <span class="cov9" title="12946">{
+        return q.head == nil
+}</span>
+
+func (q *Queue[T]) Values() []T <span class="cov1" title="1">{
+        values := []T{}
+        for node := q.head; node != nil; node = node.next </span><span class="cov1" title="2">{
+                values = append(values, node.value)
+        }</span>
+        <span class="cov1" title="1">return values</span>
+}
+</pre>
+		
+		<pre class="file" id="file14" style="display: none">package structures
+
+import "fmt"
+
+type Stack struct{ head *forwardNode }
+
+func (s *Stack) Push(v string) <span class="cov8" title="3">{
+        s.head = &amp;forwardNode{v, s.head}
+}</span>
+func (s *Stack) Pop() (string, error) <span class="cov10" title="4">{
+        if s.head == nil </span><span class="cov1" title="1">{
+                return "", fmt.Errorf("stack is empty")
+        }</span>
+        <span class="cov8" title="3">v := s.head.value
+        s.head = s.head.next
+        return v, nil</span>
+}
+func (s *Stack) Empty() bool <span class="cov5" title="2">{
+        return s.head == nil
+}</span>
+func (s *Stack) Values() []string <span class="cov5" title="2">{
+        v := []string{}
+        for c := s.head; c != nil; c = c.next </span><span class="cov10" title="4">{
+                v = append(v, c.value)
+        }</span>
+        <span class="cov5" title="2">return v</span>
+}
+</pre>
+		
+		<pre class="file" id="file15" style="display: none">package structures
+
+import "strconv"
+
+type treeNode struct {
+        value int
+        left  *treeNode
+        right *treeNode
+}
+
+type Tree struct {
+        root *treeNode
+}
+
+func (t *Tree) Empty() bool <span class="cov1" title="2">{
+        return t.root == nil
+}</span>
+
+func (t *Tree) Insert(value int) <span class="cov5" title="104">{
+        newNode := &amp;treeNode{value: value}
+        if t.root == nil </span><span class="cov1" title="2">{
+                t.root = newNode
+                return
+        }</span>
+        <span class="cov5" title="102">var next Queue[*treeNode]
+        next.Push(t.root)
+        for !next.Empty() </span><span class="cov8" title="2504">{
+                node, _ := next.Pop()
+                if node.left == nil </span><span class="cov4" title="52">{
+                        node.left = newNode
+                        return
+                }</span>
+                <span class="cov8" title="2452">if node.right == nil </span><span class="cov4" title="50">{
+                        node.right = newNode
+                        return
+                }</span>
+                <span class="cov8" title="2402">next.Push(node.left)
+                next.Push(node.right)</span>
+        }
+}
+
+func findValue(node *treeNode, value int) bool <span class="cov3" title="20">{
+        if node == nil </span><span class="cov3" title="9">{
+                return false
+        }</span>
+        <span class="cov3" title="11">if node.value == value </span><span class="cov1" title="2">{
+                return true
+        }</span>
+        <span class="cov3" title="9">return findValue(node.left, value) || findValue(node.right, value)</span>
+}
+
+func (t *Tree) Search(value int) bool <span class="cov2" title="4">{
+        return findValue(t.root, value)
+}</span>
+
+func (t *Tree) IsComplete() bool <span class="cov5" title="106">{
+        var next Queue[*treeNode]
+        next.Push(t.root)
+        gap := false
+        for !next.Empty() </span><span class="cov10" title="10228">{
+                node, _ := next.Pop()
+                if node == nil </span><span class="cov9" title="5166">{
+                        gap = true
+                }</span> else<span class="cov9" title="5062"> {
+                        if gap </span><span class="cov1" title="1">{
+                                return false
+                        }</span>
+                        <span class="cov9" title="5061">next.Push(node.left)
+                        next.Push(node.right)</span>
+                }
+        }
+        <span class="cov5" title="105">return true</span>
+}
+
+func (t *Tree) Values() []string <span class="cov2" title="3">{
+        values := []string{}
+        var next Queue[*treeNode]
+        if t.root != nil </span><span class="cov1" title="2">{
+                next.Push(t.root)
+        }</span>
+        <span class="cov2" title="3">for !next.Empty() </span><span class="cov5" title="104">{
+                node, _ := next.Pop()
+                values = append(values, strconv.Itoa(node.value))
+                if node.left != nil </span><span class="cov4" title="52">{
+                        next.Push(node.left)
+                }</span>
+                <span class="cov5" title="104">if node.right != nil </span><span class="cov4" title="50">{
+                        next.Push(node.right)
+                }</span>
+        }
+        <span class="cov2" title="3">return values</span>
+}
+
+func visit(node *treeNode, order string, values *[]string) <span class="cov4" title="36">{
+        if node == nil </span><span class="cov3" title="20">{
+                return
+        }</span>
+        <span class="cov3" title="16">if order == "PRE" </span><span class="cov3" title="8">{
+                *values = append(*values, strconv.Itoa(node.value))
+        }</span>
+        <span class="cov3" title="16">visit(node.left, order, values)
+        if order == "IN" </span><span class="cov2" title="4">{
+                *values = append(*values, strconv.Itoa(node.value))
+        }</span>
+        <span class="cov3" title="16">visit(node.right, order, values)
+        if order == "POST" </span><span class="cov2" title="4">{
+                *values = append(*values, strconv.Itoa(node.value))
+        }</span>
+}
+
+func (t *Tree) Traverse(order string) []string <span class="cov2" title="4">{
+        values := []string{}
+        visit(t.root, order, &amp;values)
+        return values
+}</span>
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>
