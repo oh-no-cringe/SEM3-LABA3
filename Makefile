@@ -126,6 +126,12 @@ benchmark: benchmark-cpp benchmark-go
 $(COVER_BUILD)/catch: $(CATCH_TESTS) $(STRUCTURES) $(HEADERS) | $(COVER_BUILD)
 	$(CXX) $(COVER_FLAGS) -Isrc -isystem $(CATCH) $(CATCH_TESTS) $(STRUCTURES) $(CATCH)/catch_amalgamated.cpp -pthread -o $@
 
+CPPCHECK ?= cppcheck
 .PHONY: lint-cpp
 lint-cpp:
 	xcrun clang-format --dry-run --Werror $(wildcard src/*.cpp src/*/*.cpp src/*/*.h src/*/*.tpp tests/test_*.cpp tests/boost/*.cpp tests/catch/*.cpp benchmarks/*.cpp)
+	@mkdir -p reports/lint
+	@$(CPPCHECK) --version
+	@$(CPPCHECK) --std=c++17 --language=c++ --enable=warning,performance,portability --error-exitcode=1 --inline-suppr -Isrc src benchmarks > reports/lint/cppcheck.txt 2>&1 || { cat reports/lint/cppcheck.txt; exit 1; }
+	@cat reports/lint/cppcheck.txt
+	@echo "Cppcheck: анализ C++ завершён, замечаний не найдено."
