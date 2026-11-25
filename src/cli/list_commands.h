@@ -1,6 +1,8 @@
 #ifndef LR3_LIST_COMMANDS_H
 #define LR3_LIST_COMMANDS_H
 
+#include "storage/storage.h"
+
 #include "input.h"
 #include <iostream>
 #include <stdexcept>
@@ -11,6 +13,20 @@ template <class T> static void run_list(T& list) {
         << "DEL_VALUE значение | FIND значение | POP_FRONT | POP_BACK | EMPTY | PRINT | EXIT\n";
     std::string command;
     while (std::cin >> command) {
+        if (command == "SAVE" || command == "LOAD") {
+            std::string format = read_word();
+            std::string path = read_word();
+            if (format != "text" && format != "binary") {
+                throw std::runtime_error("Формат: text или binary");
+            }
+            if (command == "SAVE") {
+                Save(list, path, "list", format == "binary");
+            } else {
+                Load(list, path, "list", format == "binary");
+            }
+            std::cout << "OK\n";
+            continue;
+        }
         if (command == "EXIT") {
             return;
         } else if (command == "PUSH") {

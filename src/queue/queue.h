@@ -5,6 +5,7 @@
 
 template <class T> class Queue {
 private:
+    friend class Storage;
     struct Node {
         T value;
         Node* next;

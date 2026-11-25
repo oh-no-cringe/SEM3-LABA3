@@ -3,6 +3,7 @@ package cli
 import (
 	"bytes"
 	"github.com/stretchr/testify/require"
+	"path/filepath"
 	"strings"
 	"testing"
 )
@@ -38,5 +39,26 @@ func TestErrors(t *testing.T) {
 	} {
 		var out bytes.Buffer
 		require.Error(t, Run(strings.NewReader(input), &out), input)
+	}
+}
+
+func TestFiles(t *testing.T) {
+	for _, c := range []struct{ prefix, populate string }{
+		{"1", "PUSH a PUSH b"}, {"2", "PUSH a PUSH b"},
+		{"3", "PUSH a PUSH b"}, {"4", "PUSH a PUSH b"},
+		{"5", "PUSH a PUSH b"}, {"6 2", "SET apple red"},
+		{"7", "INSERT 10 INSERT 20"},
+	} {
+		for _, format := range []string{"text", "binary"} {
+			path := filepath.Join(t.TempDir(), "archive")
+			input := c.prefix + " " + c.populate + " SAVE " + format + " " + path + " LOAD " + format + " " + path + " PRINT EXIT"
+			var out bytes.Buffer
+			require.NoError(t, Run(strings.NewReader(input), &out))
+			require.Contains(t, out.String(), "OK")
+		}
+		for _, command := range []string{"SAVE json unused", "LOAD text missing", "SAVE", "SAVE text"} {
+			var out bytes.Buffer
+			require.Error(t, Run(strings.NewReader(c.prefix+" "+command), &out))
+		}
 	}
 }

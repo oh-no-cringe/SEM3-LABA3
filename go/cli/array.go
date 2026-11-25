@@ -17,6 +17,12 @@ func (c *console) array() error {
 		if err != nil {
 			return err
 		}
+		if command == "SAVE" || command == "LOAD" {
+			if err := c.file(command, &a, "array"); err != nil {
+				return err
+			}
+			continue
+		}
 		switch command {
 		case "EXIT":
 			return nil

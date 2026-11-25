@@ -1,3 +1,4 @@
+#include "storage/storage.h"
 #include "hash/hash_table.h"
 #include "commands.h"
 #include "input.h"
@@ -16,6 +17,20 @@ void run_hash() {
     cout << "SET ключ значение | GET ключ | HAS ключ | DEL ключ | PRINT | EXIT\n";
     string command;
     while (cin >> command) {
+        if (command == "SAVE" || command == "LOAD") {
+            string format = read_word();
+            string path = read_word();
+            if (format != "text" && format != "binary") {
+                throw runtime_error("Формат: text или binary");
+            }
+            if (command == "SAVE") {
+                Save(table, path, "hash", format == "binary");
+            } else {
+                Load(table, path, "hash", format == "binary");
+            }
+            cout << "OK\n";
+            continue;
+        }
         if (command == "EXIT") {
             return;
         } else if (command == "PRINT") {

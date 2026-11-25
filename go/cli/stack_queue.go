@@ -12,7 +12,7 @@ type stackQueueMethods interface {
 	Print(io.Writer)
 }
 
-func (c *console) stackQueue(data stackQueueMethods) error {
+func (c *console) stackQueue(data stackQueueMethods, kind string) error {
 	fmt.Fprintln(c.out, "PUSH значение | POP | EMPTY | PRINT | EXIT")
 	for {
 		command, err := c.word()
@@ -21,6 +21,12 @@ func (c *console) stackQueue(data stackQueueMethods) error {
 		}
 		if err != nil {
 			return err
+		}
+		if command == "SAVE" || command == "LOAD" {
+			if err := c.file(command, data, kind); err != nil {
+				return err
+			}
+			continue
 		}
 		switch command {
 		case "EXIT":

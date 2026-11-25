@@ -1,0 +1,8 @@
+LR3TEXT1
+4
+list
+2
+5
+first
+4
+last

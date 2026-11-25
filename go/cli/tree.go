@@ -17,6 +17,12 @@ func (c *console) tree() error {
 		if err != nil {
 			return err
 		}
+		if command == "SAVE" || command == "LOAD" {
+			if err := c.file(command, &tree, "tree"); err != nil {
+				return err
+			}
+			continue
+		}
 		switch command {
 		case "EXIT":
 			return nil

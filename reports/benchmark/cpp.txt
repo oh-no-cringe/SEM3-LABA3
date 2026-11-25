@@ -1,0 +1,7 @@
+Array: 15.8958 us / 1000 elements
+ForwardList: 611.129 us / 1000 elements
+List: 35.375 us / 1000 elements
+Queue: 33.8375 us / 1000 elements
+Stack: 33.4583 us / 1000 elements
+HashTable: 299.087 us / 1000 elements
+Tree: 8321.86 us / 1000 elements

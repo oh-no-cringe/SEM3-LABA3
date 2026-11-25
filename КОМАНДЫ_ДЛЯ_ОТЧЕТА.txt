@@ -1,0 +1,45 @@
+Все команды выполняются из корня проекта:
+cd /Users/dimaefremov/Documents/lr3
+
+1. Сборка обеих версий:
+make
+make go
+
+2. Тесты и линтеры (результат для скриншота):
+make test test-boost test-catch test-go
+make lint-cpp lint-go
+
+3. Реальное покрытие (процент успешных тестов его не заменяет):
+make coverage
+open reports/index.html
+open reports/cpp/index.html
+open reports/go/index.html
+cat reports/cpp/summary.txt
+cat reports/go/summary.txt
+
+4. Сериализация — 28 проверок и 28 файлов:
+make test-serialization
+ls -lh data/serialization
+cat data/serialization/cpp-array.txt
+xxd data/serialization/cpp-array.bin | head
+
+5. C++ сохраняет, Go загружает (бинарный формат):
+printf '1 PUSH apple PUSH pear SAVE binary build/demo.bin EXIT\n' | ./build/lr3
+printf '1 LOAD binary build/demo.bin PRINT EXIT\n' | ./build/lr3-go
+
+6. Go сохраняет, C++ загружает (текстовый формат):
+printf '1 PUSH apple PUSH pear SAVE text build/demo.txt EXIT\n' | ./build/lr3-go
+printf '1 LOAD text build/demo.txt PRINT EXIT\n' | ./build/lr3
+
+7. Замеры времени:
+make benchmark
+cat reports/benchmark/cpp.txt
+cat reports/benchmark/go.txt
+
+Для отчёта полезны снимки:
+— итогов трёх тестовых библиотек C++ и тестов Go;
+— сводки покрытия C++ со строками/ветвями, сводки Go с total;
+— страницы покрытия в браузере;
+— успешного обмена файлами C++/Go;
+— результатов benchmark.
+Числовые результаты уже внесены в исправленный DOCX; новые скриншоты при необходимости добавляются к этим разделам.

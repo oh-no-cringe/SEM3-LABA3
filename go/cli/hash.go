@@ -25,6 +25,12 @@ func (c *console) hash() error {
 		if err != nil {
 			return err
 		}
+		if command == "SAVE" || command == "LOAD" {
+			if err := c.file(command, table, "hash"); err != nil {
+				return err
+			}
+			continue
+		}
 		if command == "EXIT" {
 			return nil
 		}

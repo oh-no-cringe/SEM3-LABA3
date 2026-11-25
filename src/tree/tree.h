@@ -3,6 +3,7 @@
 
 class Tree {
 private:
+    friend class Storage;
     struct Node {
         int value;
         Node* left;

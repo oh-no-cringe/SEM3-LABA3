@@ -6,6 +6,7 @@
 
 class Array {
 private:
+    friend class Storage;
     std::string* data;
     std::size_t size = 0;
     std::size_t cap = 4;

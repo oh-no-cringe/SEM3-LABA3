@@ -5,6 +5,7 @@
 
 class HashTable {
 private:
+    friend class Storage;
     Array keys;
     Array data;
     std::size_t count = 0;

@@ -5,6 +5,7 @@
 
 class ForwardList {
 private:
+    friend class Storage;
     struct Node {
         std::string value;
         Node* next;

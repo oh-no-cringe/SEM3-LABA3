@@ -13,7 +13,8 @@ void print_menu() {
          << "4 — очередь\n"
          << "5 — стек\n"
          << "6 — хеш-таблица\n"
-         << "7 — полное двоичное дерево\n";
+         << "7 — полное двоичное дерево\n"
+         << "Файлы: SAVE text|binary путь; LOAD text|binary путь\n";
 }
 
 void run_structure(int number) {

@@ -1,3 +1,4 @@
+#include "storage/storage.h"
 #include "array/array.h"
 #include "commands.h"
 #include "input.h"
@@ -12,6 +13,20 @@ void run_array() {
          << "DEL индекс | SIZE | EMPTY | PRINT | EXIT\n";
     string command;
     while (cin >> command) {
+        if (command == "SAVE" || command == "LOAD") {
+            string format = read_word();
+            string path = read_word();
+            if (format != "text" && format != "binary") {
+                throw runtime_error("Формат: text или binary");
+            }
+            if (command == "SAVE") {
+                Save(array, path, "array", format == "binary");
+            } else {
+                Load(array, path, "array", format == "binary");
+            }
+            cout << "OK\n";
+            continue;
+        }
         if (command == "EXIT") {
             return;
         } else if (command == "PUSH") {

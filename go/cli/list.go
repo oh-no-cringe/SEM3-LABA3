@@ -28,6 +28,12 @@ func (c *console) list(l listMethods) error {
 		if err != nil {
 			return err
 		}
+		if command == "SAVE" || command == "LOAD" {
+			if err := c.file(command, l, "list"); err != nil {
+				return err
+			}
+			continue
+		}
 		switch command {
 		case "EXIT":
 			return nil
